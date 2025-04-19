@@ -9,7 +9,7 @@ import * as ImagePicker from 'expo-image-picker';
 const imageProfile = Asset.fromModule(require("./assets/img/profile.png")).uri
 const leftBack = Asset.fromModule(require("./assets/img/leftArrow.png")).uri;
 
-
+ 
 
 //funcion que renderiza la App
 const App = () => {
@@ -160,67 +160,8 @@ const App = () => {
       
       </ScrollView>
 
-      {/* BOTON PARA AGREGAR PUBLICACIONES */}
-      <TouchableOpacity onPress={openModal} style={{position: "absolute", top: "800", zIndex: 100, right: 15,  width: 50, height: 50, backgroundColor: "#ffc93c", borderRadius: 25, flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
-        <Text style={{color: "#fff", fontSize: 24, fontWeight: "800"}}>+</Text>
-      </TouchableOpacity>
 
       {/* MODAL QUE APARECE AL PRESIONAR EL BOTON DE AGREGAR PUBLICACIONES */}
-      <Modal animationType="slide" visible={modalVisible} onRequestClose={closeModal} >
-
-        <View style={{flex: 1, backgroundColor: "#1c0033"}} >
-
-          {/* BOTON PARA CERRAR EL MODAL, SIN CAMBIOS */}
-          <View style={{borderBottomWidth: 2, borderBottomColor: "#fff", padding: 15 }} >
-            <TouchableOpacity onPress={closeModal} style={{flexDirection: "row", alignItems: "center", gap: 10}} >
-              <Image source={{uri: leftBack}} style={{width: 30, height: 30}} />
-              <Text style={{color: "#fff", fontSize: 20, fontWeight: "700"}} >Regresar</Text>
-
-            </TouchableOpacity>
-          </View>
-
-          {/* CAJON QUE CONTIENE LA INFORMACIÓN PERSONAL DEL USUARIO */}
-          <View style={{flexDirection: "row", padding: 25, gap: 15}}>
-            <Image source={{uri: selectedImageProfile !== null ? selectedImageProfile.localUri : imageProfile}} style={{width: 80, height: 80, borderRadius: 100, borderWidth: 5, borderColor: "#514484"}} />
-            <Text style={styles.textNameUser}>Luis Santos</Text>
-          </View>
-
-
-          {/* CAJON DE LA PUBLICACION */}
-
-          {/* ENTRADA DE TEXTO DE LA PUBLICACIÓN */}
-          <View style={{paddingHorizontal: 25, gap: 10}}>
-            <TextInput
-             placeholder="¿Qué quiéres hacer hoy?"
-             placeholderTextColor={"#fff"}
-             multiline={true}
-             style={{color: "#fff"}}
-             value={inputText}
-             onChangeText={setInputText}
-             />
-
-             {/* VALIDACION PARA UBICAR EL BOTON DE SELECCIONAR IMAGEN */}
-             {selectedImagePost?.localUri && (
-
-               <Image source={{uri: selectedImagePost?.localUri}} style={{width: "100%", height: 400}} />
-             )}
-
-          </View>
-
-          {/* BOTON PARA INGRESAR A LA GALERIA DE IMAGENES */}
-          <TouchableOpacity onPress={openImagePost} style={{backgroundColor: "#ffc93c", padding: 10, width: 250, borderRadius: 125, marginHorizontal: 80, marginTop: 20, flexDirection: "row", justifyContent: "center"}} >
-            <Text style={{color: "#fff", fontSize: 20, fontWeight: "800"}}>Selecciona una Imagen</Text>
-          </TouchableOpacity>
-
-          {/* BOTON DE PUBLICAR */}
-          <TouchableOpacity onPress={addPost} style={{backgroundColor: "#ffc93c", padding: 10, width: 250, borderRadius: 125, marginHorizontal: 80, marginTop: 20, flexDirection: "row", justifyContent: "center"}} >
-            <Text style={{color: "#fff", fontSize: 20, fontWeight: "800"}}>Publicar</Text>
-          </TouchableOpacity>
-
-
-        </View>
-
-      </Modal>
 
 
     </>
