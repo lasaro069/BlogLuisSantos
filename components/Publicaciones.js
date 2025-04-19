@@ -1,16 +1,16 @@
 import React, {useState} from "react";
-import { View, Text, StyleSheet, Image, TouchableOpacity, Modal } from "react-native";
+import { View, Text, StyleSheet, Image, TouchableOpacity, ScrollView } from "react-native";
 import { Asset } from "expo-asset";
 
 import { useImages } from "./PhotoContext";
-import Modal from "./Modal";
+import ModalPublicaciones from "./Modal";
 
 const imageProfile = Asset.fromModule(require("../assets/img/profile.png")).uri
 
 
 const Publicaciones = () => {
 
-  const[selectedImageProfile, setSelectedImageProfile] = useState(null);
+  const {selectedImageProfile} = useImages();
   const [selectedImagePost, setSelectedImagePost] = useState(null);
   const { addImage } = useImages();
   const [posts, setPosts] = useState([]);
@@ -33,7 +33,12 @@ const Publicaciones = () => {
 
   const addPost = (newPost) => {
 
-    setPosts([...posts, newPost]);
+    const currentData = new Date();
+    const updateDate = `${currentData.getDate()}/${currentData.getMonth()+1}/${currentData.getFullYear()}`;
+
+    const postWithDate = {...newPost, date: updateDate};
+
+    setPosts([...posts, postWithDate]);
 
     if (newPost.imageUri) {
       addImage(newPost.imageUri);
@@ -51,7 +56,7 @@ const Publicaciones = () => {
       <View style={styles.containerPost}>
 
           {/* ********** CONTENEDOR DE LAS PUBLICACIONES */}
-          <View style={{width: "100%", height: "100%", paddingHorizontal: 20, }}>
+          <ScrollView style={{width: "100%", height: "100%", paddingHorizontal: 20, }}>
             {posts.length > 0 ? (
               posts.slice().reverse().map((post, index) => (
 
@@ -63,11 +68,11 @@ const Publicaciones = () => {
 
                     <View style={{flexDirection: "row"}} >
 
-                      <Image source={{uri: selectedImageProfile !== null ? selectedImageProfile.localUri : imageProfile}} style={{width: 50, height: 50, borderRadius: 100, borderWidth: 5, borderColor: "#514484"}} />
+                      <Image source={{uri: selectedImageProfile ? selectedImageProfile : imageProfile}} style={{width: 50, height: 50, borderRadius: 25, borderWidth: 2, borderColor: "#1c0033"}} />
                       <View style={{flexDirection: "column", justifyContent: "center", marginLeft: 10 }}>
 
                         <Text style={{color: "#fff", fontSize: 16, fontWeight: 500, }}>Luis Santos</Text>
-                        <Text style={{color: "#fff", fontSize: 13, fontWeight: 500, }}>20/01/2024</Text>
+                        <Text style={{color: "#fff", fontSize: 13, fontWeight: 500, }}>{post.date}</Text>
 
                       </View>
                     </View>
@@ -88,20 +93,19 @@ const Publicaciones = () => {
 
 
 
-          </View >
+          </ScrollView >
 
 
         {/* BOTON PARA AGREGAR PUBLICACIONES */}
-        <TouchableOpacity onPress={openModal} style={{position: "absolute", top: "800", zIndex: 100, right: 15,  width: 50, height: 50, backgroundColor: "#ffc93c", borderRadius: 25, flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
+        <TouchableOpacity onPress={openModal} style={{position: "absolute", top: 395, zIndex: 100, right: 15,  width: 50, height: 50, backgroundColor: "#ffc93c", borderRadius: 25, flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
           <Text style={{color: "#fff", fontSize: 24, fontWeight: "800"}}>+</Text>
         </TouchableOpacity>
 
-        <Modal 
+        <ModalPublicaciones 
           selectedImagePost = {selectedImagePost}
           setSelectedImagePost = {setSelectedImagePost}
           modalVisible = {modalVisible}
           closeModal = {closeModal}
-          selectedImageProfile = {selectedImageProfile}
           addPost = {addPost}
         />
 
@@ -117,7 +121,10 @@ const Publicaciones = () => {
 };
 
 const styles = StyleSheet.create({
-
+  containerPost: {
+    flex: 1,
+    backgroundColor: "#1c0033",
+  },
 });
 
 export default Publicaciones;

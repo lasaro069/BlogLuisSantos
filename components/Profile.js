@@ -2,15 +2,16 @@ import React from "react";
 import { View, Text, StyleSheet, Image, TouchableOpacity, } from "react-native";
 import { Asset } from "expo-asset";
 
+import { useImages } from "./PhotoContext";
 import * as ImagePicker from 'expo-image-picker';
 
 const imageBanner = Asset.fromModule(require("../assets/img/banner.png")).uri;
 const imageProfile = Asset.fromModule(require("../assets/img/profile.png")).uri
 
 
-const Profile = ({selectedImageBanner, setSelectedImageBanner, selectedImageProfile, setSelectedImageProfile}) => {
+const Profile = ({selectedImageBanner, setSelectedImageBanner }) => {
 
-
+  const {selectedImageProfile, updateSelectedImageProfile} = useImages();
 
   // ********** IMAGEN DEL BANNER **********
 
@@ -45,13 +46,12 @@ const Profile = ({selectedImageBanner, setSelectedImageBanner, selectedImageProf
 
     const pickerResult = await ImagePicker.launchImageLibraryAsync();
 
-    if (pickerResult.canceled === true) {
-      return;
+    if (!pickerResult.canceled) {
+      const {uri} = pickerResult.assets[0];
+  
+      updateSelectedImageProfile( uri );
     }
 
-    const {uri} = pickerResult.assets[0];
-
-    setSelectedImageProfile({localUri: uri});
   }
 
 
@@ -86,17 +86,9 @@ const Profile = ({selectedImageBanner, setSelectedImageBanner, selectedImageProf
       </View>
 
       {/* ********** IMAGEN DE PERFIL ********** */}
-      <TouchableOpacity
-        onPress={openImageProfile}
-        style={styles.containerUserProfile}
-      >
+      <TouchableOpacity onPress={openImageProfile} style={styles.containerUserProfile} >
         <Image
-          source={{
-            uri:
-              selectedImageProfile !== null
-                ? selectedImageProfile.localUri
-                : imageProfile,
-          }}
+          source={{ uri: selectedImageProfile !== null ? selectedImageProfile : imageProfile }}
           style={styles.imageProfile}
         />
       </TouchableOpacity>

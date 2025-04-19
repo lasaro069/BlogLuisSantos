@@ -2,6 +2,7 @@ import React, {useState} from "react";
 import { View, Text, StyleSheet, Image, TouchableOpacity, Modal, TextInput } from "react-native";
 import { Asset } from "expo-asset";
 
+import  { useImages} from "./PhotoContext";
 import * as ImagePicker from 'expo-image-picker';
 
 
@@ -10,9 +11,10 @@ const leftBack = Asset.fromModule(require("../assets/img/leftArrow.png")).uri;
 
 
 
-const Modal = ({selectedImagePost, setSelectedImagePost, modalVisible, closeModal, selectedImageProfile, addPost}) => {
+const ModalPublicaciones = ({selectedImagePost, setSelectedImagePost, modalVisible, closeModal, addPost}) => {
 
   const [inputText, setInputText] = useState("");
+  const { selectedImageProfile } = useImages();
 
   const openImagePost = async () => {
     let permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -44,7 +46,7 @@ const Modal = ({selectedImagePost, setSelectedImagePost, modalVisible, closeModa
       /* reseteamos los valores del modal */
       setInputText("");
       setSelectedImagePost(null);
-      setModalVisible(false)
+      closeModal()
     }
   }
 
@@ -68,8 +70,8 @@ const Modal = ({selectedImagePost, setSelectedImagePost, modalVisible, closeModa
 
       {/* CAJON QUE CONTIENE LA INFORMACIÓN PERSONAL DEL USUARIO */}
       <View style={{flexDirection: "row", padding: 25, gap: 15}}>
-        <Image source={{uri: selectedImageProfile !== null ? selectedImageProfile.localUri : imageProfile}} style={{width: 80, height: 80, borderRadius: 100, borderWidth: 5, borderColor: "#514484"}} />
-        <Text style={styles.textNameUser}>Luis Santos</Text>
+        <Image source={{uri: selectedImageProfile !== null ? selectedImageProfile : imageProfile}} style={{width: 80, height: 80, borderRadius: 100, borderWidth: 5, borderColor: "#514484"}} />
+        <Text style={{color: "#fff", fontSize: 20, fontWeight: "800"}}>Luis Santos</Text>
       </View>
 
 
@@ -112,9 +114,9 @@ const Modal = ({selectedImagePost, setSelectedImagePost, modalVisible, closeModa
   );
 };
 
-const style = StyleSheet.create({
+const styles = StyleSheet.create({
 
 
 });
 
-export default Modal;
+export default ModalPublicaciones;

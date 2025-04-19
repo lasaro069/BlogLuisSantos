@@ -1,17 +1,23 @@
-import react, { createContext, useState, useContext} from "react";
+import React, { createContext, useState, useContext} from "react";
 
 const ImageContext = createContext();
 
-export const imageProvider = ({children}) => {
+export const ImageProvider = ({children}) => {
 
-  const [images, setImages] = useState([]);
+  const [images, setImage] = useState([]);
+
+  const [selectedImageProfile, setSelectedImageProfile] = useState(null);
 
   const addImage = (newImage) => {
     setImage([...images, newImage])
   }
 
+  const updateSelectedImageProfile = (newImage) => {
+    setSelectedImageProfile(newImage);
+  }
+
   return(
-    <ImageContext.Provider value={{images, addImage}}>
+    <ImageContext.Provider value={{images, addImage, selectedImageProfile, updateSelectedImageProfile}}>
       {children}
     </ImageContext.Provider>
 
